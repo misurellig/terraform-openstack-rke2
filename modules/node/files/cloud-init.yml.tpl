@@ -26,7 +26,7 @@ write_files:
       RKE2_ROLE=$(curl -s http://169.254.169.254/openstack/2012-08-10/meta_data.json|jq -r '.meta.rke2_role')
       RKE2_SERVICE="rke2-$RKE2_ROLE.service"
       echo "Will install RKE2 $INSTALL_RKE2_VERSION with $RKE2_ROLE role"
-      curl -sfL https://get.rke2.io | sh -
+      test $RKE2_ROLE == "agent" && curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE="agent" sh - || curl -sfL https://get.rke2.io | sh -
     fi
 %{ if bootstrap_server == "" ~}
   %{~ for f in manifests_files ~}

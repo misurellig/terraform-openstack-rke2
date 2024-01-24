@@ -9,7 +9,7 @@ output "internal_ip" {
 }
 
 output "router_ip" {
-  value       = module.network.router_ip
+  value       = length(module.network) > 0 ? module.network.router_ip : null
   description = "Router external_ip"
 }
 
@@ -20,7 +20,7 @@ output "node_config" {
 }
 
 output "subnet_id" {
-  value       = one(module.network.nodes_subnet_id)
+  value       = length(module.network) > 0 ? module.network.nodes_subnet_id : null
   description = "Nodes Subnet ID"
 }
 

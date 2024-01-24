@@ -5,8 +5,8 @@ locals {
     ssh_key_file       = var.ssh_key_file
     system_user        = var.system_user
     use_ssh_agent      = var.use_ssh_agent
-    network_id         = module.network.nodes_net_id
-    subnet_id          = module.network.nodes_subnet_id
+    network_id         = var.existing_network ? var.network_id : module.network.nodes_net_id
+    subnet_id          = var.existing_network ? var.subnet_id : module.network.nodes_subnet_id
     secgroup_id        = module.secgroup.secgroup_id
     server_affinity    = var.server_group_affinity
     config_drive       = var.nodes_config_drive
@@ -22,6 +22,7 @@ locals {
     registries_conf    = var.registries_conf
     proxy_url          = var.proxy_url
     no_proxy           = concat(["localhost", "127.0.0.1", "169.254.169.254", "127.0.0.0/8", "169.254.0.0/16", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"], var.no_proxy)
+    rke2_volume_type   = "default"
   }
   tmpdir           = "${path.root}/.terraform/tmp/rke2"
   ssh_key_arg      = var.use_ssh_agent ? "" : "-i ${var.ssh_key_file}"
@@ -38,6 +39,7 @@ module "keypair" {
 }
 
 module "network" {
+  count           = var.existing_network ? 0 : 1
   source          = "./modules/network"
   network_name    = "${var.cluster_name}-nodes-net"
   subnet_name     = "${var.cluster_name}-nodes-subnet"
@@ -67,8 +69,8 @@ module "server" {
   ssh_key_file           = var.ssh_key_file
   system_user            = var.system_user
   use_ssh_agent          = var.use_ssh_agent
-  network_id             = module.network.nodes_net_id
-  subnet_id              = module.network.nodes_subnet_id
+  network_id             = var.existing_network ? var.network_id : module.network.nodes_net_id
+  subnet_id              = var.existing_network ? var.subnet_id : module.network.nodes_subnet_id
   secgroup_id            = module.secgroup.secgroup_id
   server_affinity        = var.server_group_affinity
   assign_floating_ip     = "true"

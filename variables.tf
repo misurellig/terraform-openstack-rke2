@@ -219,3 +219,18 @@ variable "do_upgrade" {
   default     = false
   description = "Trigger upgrade provisioner"
 }
+
+variable "existing_network" {
+  type    = bool
+  default = false
+}
+
+variable "network_id" {
+  type    = string
+  default = ""
+}
+
+variable "subnet_id" {
+  type    = string
+  default = ""
+}

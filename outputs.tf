@@ -4,7 +4,7 @@ output "floating_ip" {
 }
 
 output "internal_ip" {
-  value       = module.server.internal_ip
+  value       = one(module.server.internal_ip)
   description = "Nodes internal IP"
 }
 
@@ -20,7 +20,7 @@ output "node_config" {
 }
 
 output "subnet_id" {
-  value       = module.network.nodes_subnet_id
+  value       = one(module.network.nodes_subnet_id)
   description = "Nodes Subnet ID"
 }
 

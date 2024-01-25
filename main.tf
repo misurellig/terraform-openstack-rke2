@@ -5,8 +5,8 @@ locals {
     ssh_key_file       = var.ssh_key_file
     system_user        = var.system_user
     use_ssh_agent      = var.use_ssh_agent
-    network_id         = var.existing_network ? var.network_id : module.network.nodes_net_id
-    subnet_id          = var.existing_network ? var.subnet_id : module.network.nodes_subnet_id
+    network_id         = var.existing_network ? var.network_id : module.network[0].nodes_net_id
+    subnet_id          = var.existing_network ? var.subnet_id : module.network[0].nodes_subnet_id
     secgroup_id        = module.secgroup.secgroup_id
     server_affinity    = var.server_group_affinity
     config_drive       = var.nodes_config_drive
@@ -69,8 +69,8 @@ module "server" {
   ssh_key_file           = var.ssh_key_file
   system_user            = var.system_user
   use_ssh_agent          = var.use_ssh_agent
-  network_id             = var.existing_network ? var.network_id : module.network.nodes_net_id
-  subnet_id              = var.existing_network ? var.subnet_id : module.network.nodes_subnet_id
+  network_id             = var.existing_network ? var.network_id : module.network[0].nodes_net_id
+  subnet_id              = var.existing_network ? var.subnet_id : module.network[0].nodes_subnet_id
   secgroup_id            = module.secgroup.secgroup_id
   server_affinity        = var.server_group_affinity
   assign_floating_ip     = "true"
